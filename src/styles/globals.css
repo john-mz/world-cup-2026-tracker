@@ -1183,6 +1183,64 @@ h1, h2, h3, h4, h5, h6 { margin: 0; }
   .segmented button { padding: 6px 10px; font-size: 12px; }
 }
 
+/* ---------- Home footer ---------- */
+.home__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  padding: 40px 24px 56px;
+  border-top: 1px solid var(--rule);
+  margin-top: 40px;
+}
+
+.home__footer-msg {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.home__footer-kofi {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  background: transparent;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.home__footer-kofi svg {
+  color: #FF5E5B;
+  flex-shrink: 0;
+}
+
+.home__footer-kofi:hover {
+  border-color: #FF5E5B;
+  color: #FF5E5B;
+  background: rgba(255, 94, 91, 0.06);
+}
+
+.home__footer-divider {
+  color: var(--rule);
+  font-size: 13px;
+  select: none;
+}
+
+.home__footer-copy {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
 /* Loading state */
 .loading-state {
   padding: 60px 20px;

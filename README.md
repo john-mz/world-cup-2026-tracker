@@ -4,6 +4,8 @@ A fast, clean tracker for the official Panini FIFA World Cup 2026 sticker album.
 
 Live at [world-cup-2026-tracker-of.vercel.app](https://world-cup-2026-tracker-of.vercel.app)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/poethy)
+
 ---
 
 ## What it does
@@ -167,6 +169,14 @@ Add `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_ANON_KEY` in your Vercel project 
 ## Contributing
 
 The sticker catalog (`src/data/stickers.ts`) is the source of truth for all 980 entries. If you spot a wrong player name, missing number, or want to add image URLs — pull requests are welcome.
+
+---
+
+## Support
+
+If this helped you, consider supporting future projects.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/poethy)
 
 ---
 
