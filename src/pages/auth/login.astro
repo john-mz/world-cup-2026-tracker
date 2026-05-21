@@ -17,6 +17,8 @@ import GoogleAuthButton from '../../components/auth/GoogleAuthButton';
       <p class="auth-note">
         Al continuar, aceptas que guardemos tu progreso de colección en nuestra base de datos.
       </p>
+
+      <a href="/" class="back-link">← Volver al inicio</a>
     </div>
   </div>
 </RootLayout>
@@ -71,5 +73,18 @@ import GoogleAuthButton from '../../components/auth/GoogleAuthButton';
     text-align: center;
     margin: 0;
     line-height: 1.5;
+  }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .back-link:hover {
+    color: #6b7280;
   }
 </style>
