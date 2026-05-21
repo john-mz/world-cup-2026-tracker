@@ -1,53 +1,71 @@
 # World Cup 2026 Tracker
 
-Track your FIFA World Cup 2026 Panini sticker album collection. Built with Astro, TypeScript, Supabase, and deployable to Vercel.
+A fast, clean tracker for the official Panini FIFA World Cup 2026 sticker album. Sign in, mark what you own, and see what's still missing — synced across all your devices.
 
-## Features
+Live at [world-cup-2026-tracker-of.vercel.app](https://world-cup-2026-tracker-of.vercel.app)
 
-- Mark stickers as owned/missing with a single click
-- Real-time progress statistics by country
-- Search and filter by player name, country, or status
-- Complete open-source sticker catalog (980 stickers, 48 teams)
-- Public REST API for the sticker catalog
+---
 
-## Open-Source API
+## What it does
 
-The complete Panini FIFA World Cup 2026 album data is available as a public REST API:
+- 980 stickers across 48 national teams — tap any card to mark it owned
+- Progress bar and missing-sticker count update instantly, no page reload
+- Jump-to-section nav, search by player or team, filter by owned / missing
+- "Top missing teams" sidebar so you know where to focus your next swap
+- Collection syncs the moment you sign in — works on phone, tablet, desktop
+- Public REST API to query the full sticker catalog (no auth required)
 
-### `GET /api/stickers`
+---
 
-Returns the sticker catalog with optional filters.
+## Album structure
+
+| Section | Stickers |
+|---|---|
+| Cover | 4 |
+| Tournament history | 24 |
+| Host nations (CAN / MEX / USA) | 36 |
+| 48 national teams x 20 each | 960 |
+| **Total** | **980** |
+
+Each team page contains: 1 country crest, 18 player stickers, 1 team photo.
+
+---
+
+## Public REST API
+
+No API key needed. The full catalog is open.
+
+### GET /api/stickers
+
+```
+GET /api/stickers
+GET /api/stickers?country_code=ARG
+GET /api/stickers?country_code=BRA&section=regular
+GET /api/stickers?limit=20&offset=40
+```
+
+Query parameters:
 
 | Parameter | Type | Description |
-|-----------|------|-------------|
-| `country_code` | string | Filter by team code (e.g. `ARG`, `BRA`, `ESP`) |
-| `country` | string | Filter by country name (partial match) |
-| `page` | number | Filter by album page number |
+|---|---|---|
+| `country_code` | string | Three-letter FIFA code — `ARG`, `BRA`, `ESP`, etc. |
+| `country` | string | Partial country name match |
+| `page` | number | Album page number |
 | `section` | string | `regular` or `special` |
 | `limit` | number | Results per page (max 500, default 100) |
 | `offset` | number | Pagination offset |
 
-**Example:**
-```
-GET /api/stickers?country_code=ARG
-GET /api/stickers?section=special
-GET /api/stickers?limit=20&offset=0
-```
+Response shape:
 
-**Response:**
 ```json
 {
   "data": [
     {
-      "id": 1,
       "number": 17,
       "name": "Lionel Messi",
       "country": "Argentina",
-      "country_code": "ARG",
-      "page_number": 6,
-      "position_in_page": 8,
-      "section_type": "regular",
-      "image_url": null
+      "countryCode": "ARG",
+      "sectionType": "regular"
     }
   ],
   "count": 20,
@@ -56,9 +74,9 @@ GET /api/stickers?limit=20&offset=0
 }
 ```
 
-### `GET /api/stats`
+### GET /api/stats
 
-Returns aggregate statistics for the sticker catalog.
+Aggregate counts for the full catalog.
 
 ```json
 {
@@ -73,21 +91,28 @@ Returns aggregate statistics for the sticker catalog.
 }
 ```
 
-## Album Structure
+---
 
-- **Total:** 980 stickers, 112 pages
-- **48 national teams** × 20 stickers each:
-  - 1 country emblem
-  - 18 player stickers  
-  - 1 team photo
-- **Special content:** FIFA World Cup history, host country emblems, official emblems
+## Stack
 
-## Setup
+| Layer | Technology |
+|---|---|
+| Framework | [Astro 4](https://astro.build) + React + TypeScript |
+| Auth + DB | [Supabase](https://supabase.com) (Google OAuth, RLS, Postgres) |
+| Hosting | [Vercel](https://vercel.com) (serverless, Node 20) |
+| Styles | Vanilla CSS (no framework) |
+| Data | Extracted from the official Panini FIFA World Cup 2026 checklist |
+
+All user data is stored in a `user_stickers` table protected by Supabase Row Level Security — only you can read or write your own rows. No server middleware sits between the browser and the database.
+
+---
+
+## Run it yourself
 
 ### Prerequisites
 
-- Node.js 18+
-- [Supabase](https://supabase.com) account
+- Node.js 18 or later
+- A [Supabase](https://supabase.com) project
 
 ### 1. Clone and install
 
@@ -97,37 +122,36 @@ cd world-cup-2026-tracker
 npm install
 ```
 
-### 2. Configure Supabase
+### 2. Create the database table
 
-1. Create a new Supabase project at [supabase.com](https://supabase.com)
-2. Go to the SQL Editor and run `supabase/schema.sql`
-3. Then run `supabase/seed.sql` to populate all 980 stickers
+Open the SQL Editor in your Supabase project and run `supabase/schema.sql`. This creates the `user_stickers` table and the four RLS policies (SELECT, INSERT, UPDATE, DELETE).
 
-### 3. Environment variables
+No seed file needed — the full 980-sticker catalog lives in `src/data/stickers.ts` and is served statically at build time.
 
-Copy `.env.example` to `.env` and fill in your Supabase credentials:
+### 3. Set environment variables
+
+Copy `.env.example` to `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-```env
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
+Fill in the two values from your Supabase project under **Settings > API**:
 
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```env
+PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-Get these from your Supabase project dashboard under **Settings → API**.
-
-### 4. Run locally
+### 4. Start the dev server
 
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:4321](http://localhost:4321).
+
+---
 
 ## Deploy to Vercel
 
@@ -136,18 +160,15 @@ npm i -g vercel
 vercel
 ```
 
-Set the same environment variables in your Vercel project settings.
+Add `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_ANON_KEY` in your Vercel project under **Settings > Environment Variables**, then redeploy.
 
-## Tech Stack
-
-- **Frontend:** [Astro](https://astro.build) + React + TypeScript
-- **Database & Auth:** [Supabase](https://supabase.com)
-- **Deployment:** [Vercel](https://vercel.com)
-- **Data:** Extracted from official Panini FIFA World Cup 2026 album checklist
+---
 
 ## Contributing
 
-The sticker catalog data in `src/data/stickers.ts` and `supabase/seed.sql` is open-source. PRs to fix player names, add image URLs, or extend the dataset are welcome.
+The sticker catalog (`src/data/stickers.ts`) is the source of truth for all 980 entries. If you spot a wrong player name, missing number, or want to add image URLs — pull requests are welcome.
+
+---
 
 ## License
 
