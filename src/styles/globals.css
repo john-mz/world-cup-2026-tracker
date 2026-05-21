@@ -1241,6 +1241,19 @@ h1, h2, h3, h4, h5, h6 { margin: 0; }
   letter-spacing: 0.08em;
 }
 
+.home__footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+.home__footer-link:hover {
+  color: var(--ink);
+}
+
 /* Loading state */
 .loading-state {
   padding: 60px 20px;

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="5" fill="#0B0E0C"/>
+  <!-- Cup body -->
+  <path d="M9 4 H23 L20 15 Q16 18.5 12 15 Z" fill="#C8FF3D"/>
+  <!-- Left handle -->
+  <path d="M10 6 C5 6 4 9 4 11 C4 13 7 14.5 10 13" fill="none" stroke="#C8FF3D" stroke-width="2" stroke-linecap="round"/>
+  <!-- Right handle -->
+  <path d="M22 6 C27 6 28 9 28 11 C28 13 25 14.5 22 13" fill="none" stroke="#C8FF3D" stroke-width="2" stroke-linecap="round"/>
+  <!-- Stem -->
+  <rect x="14.5" y="18" width="3" height="5" rx="0.5" fill="#C8FF3D"/>
+  <!-- Base -->
+  <rect x="9.5" y="23" width="13" height="3" rx="1.5" fill="#C8FF3D"/>
+</svg>
