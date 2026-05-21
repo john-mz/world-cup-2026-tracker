@@ -982,3 +982,21 @@ export const STICKERS: Omit<Sticker, 'id' | 'imageUrl' | 'createdAt'>[] = [
   { number: 979, name: "Team Photo", country: "Germany 2014", countryCode: "FWC", pageNumber: 108, positionInPage: 1, sectionType: "special" },
   { number: 980, name: "Team Photo", country: "Argentina 2022", countryCode: "FWC", pageNumber: 109, positionInPage: 1, sectionType: "special" }
 ];
+
+// Compute position of each sticker within its countryCode group (1-based)
+export const STICKER_SECTION_INDEX: Record<number, number> = (() => {
+  const counters: Record<string, number> = {};
+  const map: Record<number, number> = {};
+  for (const s of STICKERS) {
+    counters[s.countryCode] = (counters[s.countryCode] || 0) + 1;
+    map[s.number] = counters[s.countryCode];
+  }
+  return map;
+})();
+
+// Returns the display code shown on the card: "00", "ALG-1", "FWC-3", etc.
+export function getStickerDisplayCode(countryCode: string, globalNumber: number): string {
+  if (countryCode === 'WP') return '00';
+  const idx = STICKER_SECTION_INDEX[globalNumber];
+  return `${countryCode}-${idx}`;
+}

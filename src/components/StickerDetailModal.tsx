@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { COUNTRY_BY_CODE, SECTION_LABELS, getStickerType } from '../data/album-structure';
 import type { Sticker } from '../data/album-structure';
+import { getStickerDisplayCode } from '../data/stickers';
 import FlagBlock from './FlagBlock';
 
 interface StickerDetailModalProps {
@@ -28,6 +29,7 @@ export default function StickerDetailModal({ sticker, owned, onClose, onToggle }
     : null;
 
   const stickerType = getStickerType(sticker.name, sticker.countryCode, sticker.number);
+  const displayCode = getStickerDisplayCode(sticker.countryCode, sticker.number);
 
   const typeLabel =
       stickerType === 'cover'   ? 'Cover Edition'
@@ -61,7 +63,7 @@ export default function StickerDetailModal({ sticker, owned, onClose, onToggle }
         {/* Header */}
         <header className="modal__head">
           <div className="modal__head-left">
-            <span className="mono modal__id">#{sticker.number}</span>
+            <span className="mono modal__id">{displayCode}</span>
             <span className="modal__type mono">{typeLabel}</span>
           </div>
           <button className="modal__close" onClick={onClose} aria-label="Close">×</button>
@@ -72,7 +74,7 @@ export default function StickerDetailModal({ sticker, owned, onClose, onToggle }
           <div className="modal__photo">
             <div className="modal__photo-frame" aria-label="Photo placeholder">
               <span className="modal__photo-label mono">{photoLabel}</span>
-              <span className="modal__photo-hint mono">drop {sticker.number}.jpg here</span>
+              <span className="modal__photo-hint mono">drop {displayCode}.jpg here</span>
               {country && (
                 <div className="modal__photo-flag" aria-hidden="true">
                   <FlagBlock country={country} size="md" />
@@ -109,7 +111,7 @@ export default function StickerDetailModal({ sticker, owned, onClose, onToggle }
               </div>
               <div className="modal__fact">
                 <dt className="mono">Sticker N°</dt>
-                <dd>{sticker.number}</dd>
+                <dd>{displayCode}</dd>
               </div>
               <div className="modal__fact">
                 <dt className="mono">Type</dt>

@@ -1,6 +1,6 @@
 ---
 import RootLayout from '../layouts/RootLayout.astro';
-import { COUNTRIES } from '../data/album-structure';
+import { COUNTRIES, FIFA_TO_ISO } from '../data/album-structure';
 ---
 
 <RootLayout title="World Cup 2026 Tracker">
@@ -124,24 +124,36 @@ import { COUNTRIES } from '../data/album-structure';
           <span class="eyebrow">FIFA World Cup 2026</span>
         </header>
         <div class="home__teams-grid">
-          {COUNTRIES.map(c => (
+          {COUNTRIES.map(c => {
+            const iso = FIFA_TO_ISO[c.code];
+            return (
             <a href={`/tracker?section=${c.code}`} class="team-pill">
-              <div
-                class={`flag flag--${c.dir}`}
-                style="width:36px;height:24px;flex-shrink:0"
-                title={c.name}
-                aria-label={c.name}
-              >
-                <span style={`background:${c.stripes[0]}`}></span>
-                <span style={`background:${c.stripes[1]}`}></span>
-                <span style={`background:${c.stripes[2]}`}></span>
-              </div>
+              {iso ? (
+                <span
+                  class={`fi fi-${iso}`}
+                  style="display:inline-block;width:36px;height:24px;flex-shrink:0;border-radius:3px;background-size:cover;background-position:center;vertical-align:middle"
+                  title={c.name}
+                  aria-label={c.name}
+                ></span>
+              ) : (
+                <div
+                  class={`flag flag--${c.dir}`}
+                  style="width:36px;height:24px;flex-shrink:0"
+                  title={c.name}
+                  aria-label={c.name}
+                >
+                  <span style={`background:${c.stripes[0]}`}></span>
+                  <span style={`background:${c.stripes[1]}`}></span>
+                  <span style={`background:${c.stripes[2]}`}></span>
+                </div>
+              )}
               <div style="display:flex;flex-direction:column;gap:2px">
                 <span class="team-pill__name">{c.name}</span>
                 <span class="team-pill__code">{c.code} · {c.region}{c.host ? ' · HOST' : ''}</span>
               </div>
             </a>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>

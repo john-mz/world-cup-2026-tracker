@@ -1,6 +1,7 @@
 import React from 'react';
 import { COUNTRY_BY_CODE, SECTION_LABELS } from '../data/album-structure';
 import type { Country } from '../data/album-structure';
+import { getStickerDisplayCode } from '../data/stickers';
 import FlagBlock from './FlagBlock';
 
 interface StickerCardProps {
@@ -26,6 +27,7 @@ export default function StickerCard({
 }: StickerCardProps) {
   const isSpecial = sectionType === 'special';
   const countryData: Country | undefined = COUNTRY_BY_CODE[countryCode];
+  const displayCode = getStickerDisplayCode(countryCode, number);
 
   const cls = [
     'sticker',
@@ -61,7 +63,7 @@ export default function StickerCard({
       >
         <div className="sticker__art">
           <div className="sticker__art-top">
-            <div className="sticker__num">#{number}</div>
+            <div className="sticker__num">{displayCode}</div>
             {specialBadge && <span className="sticker__special">{specialBadge}</span>}
           </div>
 
