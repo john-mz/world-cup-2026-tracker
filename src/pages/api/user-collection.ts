@@ -5,7 +5,7 @@ function getSupabaseWithAuth(request: Request) {
   const authHeader = request.headers.get('Authorization');
   const token = authHeader?.replace('Bearer ', '');
   return createClient(
-    import.meta.env.SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
     token ? { global: { headers: { Authorization: `Bearer ${token}` } } } : undefined
   );
