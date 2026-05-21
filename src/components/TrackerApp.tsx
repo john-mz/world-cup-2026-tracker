@@ -174,8 +174,24 @@ export default function TrackerApp() {
     for (const key of SECTION_ORDER) {
       if (map.has(key)) ordered.push([key, map.get(key)!]);
     }
+
+    // When there's a text query, sort sections so that country code / name
+    // matches float above sections that only match through player names.
+    const q = query.trim().toLowerCase();
+    if (q) {
+      const sectionScore = (key: string): number => {
+        const code = key.toLowerCase();
+        const name = (COUNTRY_BY_CODE[key]?.name ?? '').toLowerCase();
+        if (code === q || name === q)           return 0; // exact
+        if (code.startsWith(q) || name.startsWith(q)) return 1; // prefix
+        if (code.includes(q)  || name.includes(q))    return 2; // contains
+        return 3;                                               // player-name only
+      };
+      ordered.sort((a, b) => sectionScore(a[0]) - sectionScore(b[0]));
+    }
+
     return ordered;
-  }, [filtered]);
+  }, [filtered, query]);
 
   const handleReset = () => { setQuery(''); setFilter('all'); setCountryFilter('all'); };
 
