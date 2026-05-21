@@ -1,16 +1,21 @@
 ---
 import RootLayout from '../../layouts/RootLayout.astro';
-import LoginForm from '../../components/auth/LoginForm';
+import GoogleAuthButton from '../../components/auth/GoogleAuthButton';
 ---
 
-<RootLayout title="Login - World Cup 2026 Tracker">
+<RootLayout title="Iniciar sesión - WC 2026 Tracker">
   <div class="auth-container">
     <div class="auth-card">
-      <h1>Login</h1>
-      <p class="auth-description">Sign in to your account to track your sticker collection</p>
-      <LoginForm client:load />
-      <p class="auth-footer">
-        Don't have an account? <a href="/auth/register">Register here</a>
+      <div class="auth-header">
+        <div class="auth-icon">⚽</div>
+        <h1>World Cup 2026 Tracker</h1>
+        <p>Inicia sesión para llevar el seguimiento de tu álbum Panini</p>
+      </div>
+
+      <GoogleAuthButton client:load />
+
+      <p class="auth-note">
+        Al continuar, aceptas que guardemos tu progreso de colección en nuestra base de datos.
       </p>
     </div>
   </div>
@@ -28,38 +33,43 @@ import LoginForm from '../../components/auth/LoginForm';
 
   .auth-card {
     background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 400px;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  .auth-card h1 {
-    font-size: 1.75rem;
-    margin-bottom: 0.5rem;
+  .auth-header {
     text-align: center;
   }
 
-  .auth-description {
+  .auth-icon {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .auth-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 0.5rem;
+  }
+
+  .auth-header p {
     color: #6b7280;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .auth-note {
+    font-size: 0.75rem;
+    color: #9ca3af;
     text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .auth-footer {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #6b7280;
-  }
-
-  .auth-footer a {
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .auth-footer a:hover {
-    text-decoration: underline;
+    margin: 0;
+    line-height: 1.5;
   }
 </style>
