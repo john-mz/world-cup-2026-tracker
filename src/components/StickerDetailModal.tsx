@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { COUNTRY_BY_CODE, SECTION_LABELS, getStickerType } from '../data/album-structure';
 import type { Sticker } from '../data/album-structure';
 import { getStickerDisplayCode } from '../data/stickers';
+import PLAYER_IMAGES from '../data/player-images.json';
 import FlagBlock from './FlagBlock';
 
 interface StickerDetailModalProps {
@@ -30,6 +31,7 @@ export default function StickerDetailModal({ sticker, owned, onClose, onToggle }
 
   const stickerType = getStickerType(sticker.name, sticker.countryCode, sticker.number);
   const displayCode = getStickerDisplayCode(sticker.countryCode, sticker.number);
+  const photoUrl: string | null = (PLAYER_IMAGES as Record<string, string | null>)[sticker.number] ?? null;
 
   const typeLabel =
       stickerType === 'cover'   ? 'Cover Edition'
@@ -70,15 +72,26 @@ export default function StickerDetailModal({ sticker, owned, onClose, onToggle }
         </header>
 
         <div className="modal__body">
-          {/* Photo placeholder (left) */}
+          {/* Photo (left) */}
           <div className="modal__photo">
-            <div className="modal__photo-frame" aria-label="Photo placeholder">
-              <span className="modal__photo-label mono">{photoLabel}</span>
-              <span className="modal__photo-hint mono">drop {displayCode}.jpg here</span>
-              {country && (
-                <div className="modal__photo-flag" aria-hidden="true">
-                  <FlagBlock country={country} size="md" />
-                </div>
+            <div className="modal__photo-frame" aria-label={photoUrl ? sticker.name : 'Photo placeholder'}>
+              {photoUrl ? (
+                <img
+                  src={photoUrl}
+                  alt={sticker.name}
+                  className="modal__photo-img"
+                  draggable={false}
+                />
+              ) : (
+                <>
+                  <span className="modal__photo-label mono">{photoLabel}</span>
+                  <span className="modal__photo-hint mono">drop {displayCode}.jpg here</span>
+                  {country && (
+                    <div className="modal__photo-flag" aria-hidden="true">
+                      <FlagBlock country={country} size="md" />
+                    </div>
+                  )}
+                </>
               )}
             </div>
             <div className={`modal__status ${owned ? 'is-owned' : ''}`}>

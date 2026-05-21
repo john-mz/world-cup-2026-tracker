@@ -2,6 +2,7 @@ import React from 'react';
 import { COUNTRY_BY_CODE, SECTION_LABELS } from '../data/album-structure';
 import type { Country } from '../data/album-structure';
 import { getStickerDisplayCode } from '../data/stickers';
+import PLAYER_IMAGES from '../data/player-images.json';
 import FlagBlock from './FlagBlock';
 
 interface StickerCardProps {
@@ -28,14 +29,15 @@ export default function StickerCard({
   const isSpecial = sectionType === 'special';
   const countryData: Country | undefined = COUNTRY_BY_CODE[countryCode];
   const displayCode = getStickerDisplayCode(countryCode, number);
+  const photoUrl: string | null = (PLAYER_IMAGES as Record<string, string | null>)[number] ?? null;
 
   const cls = [
     'sticker',
     owned ? 'is-owned' : 'is-missing',
     isSpecial ? 'is-special' : '',
+    photoUrl ? 'has-photo' : '',
   ].filter(Boolean).join(' ');
 
-  // Special badge text
   const specialBadge = isSpecial ? (
     countryCode === 'WP' ? 'EDT' :
     countryCode === 'FWC' && number <= 6 ? 'WC' :
@@ -47,13 +49,10 @@ export default function StickerCard({
     onOpenDetail(number);
   };
 
-  const sectionLabel = countryData?.name
-    || SECTION_LABELS[countryCode]
-    || country;
+  const sectionLabel = countryData?.name || SECTION_LABELS[countryCode] || country;
 
   return (
     <div className={cls} data-sticker-id={number}>
-      {/* Main toggle button — covers the whole card */}
       <button
         type="button"
         className="sticker__main"
@@ -67,8 +66,18 @@ export default function StickerCard({
             {specialBadge && <span className="sticker__special">{specialBadge}</span>}
           </div>
 
-          {/* Big flag feature */}
-          {countryData ? (
+          {/* Player headshot — tight top crop via CSS */}
+          {photoUrl ? (
+            <div className="sticker__photo">
+              <img
+                src={photoUrl}
+                alt={name}
+                className="sticker__photo-img"
+                loading="lazy"
+                draggable={false}
+              />
+            </div>
+          ) : countryData ? (
             <div className="sticker__flag-feature">
               <FlagBlock country={countryData} size="hero" />
             </div>
@@ -105,7 +114,6 @@ export default function StickerCard({
         </div>
       </button>
 
-      {/* "?" info button */}
       <button
         type="button"
         className="sticker__info-btn"

@@ -854,6 +854,30 @@ h1, h2, h3, h4, h5, h6 { margin: 0; }
   letter-spacing: 0.18em;
 }
 
+/* Player headshot inside card art */
+.sticker__photo {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.sticker__photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  /* Slight darken on missing so the ✓ stands out when owned */
+  filter: grayscale(0%);
+  transition: filter 0.2s;
+}
+.sticker.is-missing .sticker__photo-img {
+  filter: grayscale(60%) brightness(0.7);
+}
+
 /* Country band at the bottom */
 .sticker__flag-band {
   position: relative;
@@ -1007,7 +1031,20 @@ h1, h2, h3, h4, h5, h6 { margin: 0; }
   content: '';
   position: absolute; inset: 0;
   background: repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,0.025) 14px 15px);
+  pointer-events: none;
 }
+
+/* Real player photo in modal — upper-body crop */
+.modal__photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
 .modal__photo-label {
   position: relative;
   z-index: 1;

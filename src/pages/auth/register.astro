@@ -1,5 +1,4 @@
 ---
 // Register is the same as login with Google OAuth — Supabase creates the account automatically.
-import { redirect } from 'astro';
-return redirect('/auth/login', 302);
+return Astro.redirect('/auth/login', 302);
 ---
