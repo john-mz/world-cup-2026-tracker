@@ -1,0 +1,90 @@
+---
+import RootLayout from './RootLayout.astro';
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<RootLayout title={title}>
+  <div class="app-container">
+    <nav class="navbar">
+      <div class="nav-content">
+        <h1 class="app-title">World Cup 2026 Tracker</h1>
+        <div class="nav-links">
+          <a href="/tracker">Tracker</a>
+          <a href="/api/logout" class="btn-logout">Logout</a>
+        </div>
+      </div>
+    </nav>
+    <main class="main-content">
+      <slot />
+    </main>
+  </div>
+</RootLayout>
+
+<style>
+  .app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .navbar {
+    background: #1f2937;
+    color: white;
+    padding: 1rem 0;
+    border-bottom: 1px solid #374151;
+  }
+
+  .nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .app-title {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: #60a5fa;
+  }
+
+  .btn-logout {
+    background: #ef4444;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+  }
+
+  .btn-logout:hover {
+    background: #dc2626;
+    color: white;
+  }
+
+  .main-content {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+</style>
