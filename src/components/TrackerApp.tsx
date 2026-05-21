@@ -297,25 +297,36 @@ export default function TrackerApp() {
 
       {/* ── MAIN ─────────────────────────────────────────── */}
       <main className="tracker__main">
-        {/* Section nav chips */}
+        {/* Section nav chips — auto-scrolling carousel, pauses on hover */}
         <nav className="section-nav" aria-label="Sections">
-          {SECTION_ORDER.map(key => {
-            const items = STICKERS.filter(s => STICKER_SECTIONS[s.number] === key);
-            if (!items.length) return null;
-            const ownedInSection = items.filter(s => owned[s.number]).length;
-            const isActive = countryFilter === key;
-            return (
-              <button
-                key={key}
-                onClick={() => setCountryFilter(key === countryFilter ? 'all' : key)}
-                className={[isActive ? 'is-active' : '', ownedInSection > 0 ? 'has-progress' : ''].filter(Boolean).join(' ')}
+          <div className="section-nav__track">
+            {[false, true].map((isDupe) => (
+              <div
+                key={isDupe ? 'dupe' : 'orig'}
+                className="section-nav__set"
+                aria-hidden={isDupe ? true : undefined}
               >
-                <span className="dot" />
-                <span>{SECTION_LABELS[key] || key}</span>
-                <span style={{ opacity: 0.5 }}>{ownedInSection}/{items.length}</span>
-              </button>
-            );
-          })}
+                {SECTION_ORDER.map(key => {
+                  const items = STICKERS.filter(s => STICKER_SECTIONS[s.number] === key);
+                  if (!items.length) return null;
+                  const ownedInSection = items.filter(s => owned[s.number]).length;
+                  const isActive = countryFilter === key;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setCountryFilter(key === countryFilter ? 'all' : key)}
+                      className={[isActive ? 'is-active' : '', ownedInSection > 0 ? 'has-progress' : ''].filter(Boolean).join(' ')}
+                      tabIndex={isDupe ? -1 : undefined}
+                    >
+                      <span className="dot" />
+                      <span>{SECTION_LABELS[key] || key}</span>
+                      <span style={{ opacity: 0.5 }}>{ownedInSection}/{items.length}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
         </nav>
 
         {/* Filter bar */}
